@@ -102,65 +102,212 @@ function MenuPage() {
           alt="Background"
           fill
           className={styles.backgroundImage}
+          priority
         />
       </div>
 
       {/* 배경 그라디언트 오버레이 */}
-      <div className={styles.backgroundGradient}></div>
+      <div className={styles.menuBackground}></div>
 
       {/* 헤더 */}
-      <header className={styles.header}>
+      <div className={styles.menuHeader}>
         <div className={styles.headerLogo}>
-          <Image
+          <img
             src="/images/Logo.svg"
             alt="Header Logo"
-            width={65}
-            height={60}
-            className={styles.headerLogoImage}
+            style={{
+              width: '65px',
+              height: '60px',
+              objectFit: 'cover'
+            }}
           />
         </div>
-        <span className={styles.headerText}>주문내역</span>
-      </header>
-
-      {/* 메인 메뉴 타이틀 */}
-      <div className={styles.menuTitle}>
-        <div className={styles.menuTitleImage}></div>
-        <p className={styles.menuTitleText}>⚠️ 안주는 선불결제입니다!</p>
+        <div className={styles.headerTitle}>주문내역</div>
       </div>
 
-      {/* 메뉴 리스트 */}
-      <div className={styles.menuList}>
-        <MenuItem
-          name="테토야끼"
-          price="17,000"
-        />
-        <MenuItem
-          name="에겐남의 마음처럼&#10;따뜻한 콘치즈"
-          price="18,000"
-        />
-        <MenuItem
-          name="테토남의 소울푸드&#10;제육볶음"
-          price="18,000"
-        />
-        <MenuItem
-          name="테토녀가 직접 사냥한&#10;치킨 가라아게"
-          price="18,000"
-        />
-        <MenuItem
-          name="두부상 에겐남이 만든&#10;순두부찌개"
-          price="16,000"
-        />
-        <MenuItem
-          name="에겐, 테토 다같이&#10;김치~전"
-          price="16,000"
-          isLast={true}
-        />
+      {/* 메인메뉴 타이틀 */}
+      <div className={styles.menuTitleSection}>
+        <div className={styles.menuTitleImage}>
+          <img
+            src="/images/메인메뉴@300x-8.png"
+            alt="메인메뉴"
+            style={{
+              width: '180px',
+              height: '95px',
+              objectFit: 'cover'
+            }}
+          />
+        </div>
+        <div className={styles.menuWarning}>⚠️  안주는 선불결제입니다!</div>
       </div>
 
-      {/* 음료 메뉴 타이틀 */}
-      <div className={styles.drinksTitle}>
-        <div className={styles.drinksTitleImage}></div>
-        <p className={styles.drinksTitleText}>⚠️ 주류 및 음료는 후불결제입니다!</p>
+      {/* 메뉴 아이템들 */}
+      <div className={styles.menuItems}>
+        {/* 테토야끼 */}
+        <div className={styles.menuItem}>
+          <div className={styles.menuItemLeft}>
+            <div className={styles.menuItemImage}></div>
+            <div className={styles.menuItemInfo}>
+              <div className={styles.menuItemName}>테토야끼</div>
+              <div className={styles.menuItemPrice}>17,000</div>
+            </div>
+          </div>
+          <div className={styles.menuItemRight}>
+            <div className={styles.quantityControl}>
+              <div className={styles.minusButton}>
+                <div className={styles.minusCircle}></div>
+                <div className={styles.minusIcon}>-</div>
+              </div>
+              <div className={styles.quantity}>00</div>
+              <div className={styles.plusButton}>
+                <div className={styles.plusCircle}></div>
+                <div className={styles.plusIcon}>+</div>
+              </div>
+            </div>
+            <div className={styles.totalPrice}>17,000</div>
+          </div>
+        </div>
+
+        {/* 에겐남의 마음처럼 따뜻한 콘치즈 */}
+        <div className={styles.menuItem}>
+          <div className={styles.menuItemLeft}>
+            <div className={styles.menuItemImage}></div>
+            <div className={styles.menuItemInfo}>
+              <div className={styles.menuItemName}>에겐남의 마음처럼<br />따뜻한 콘치즈</div>
+              <div className={styles.menuItemPrice}>18,000</div>
+            </div>
+          </div>
+          <div className={styles.menuItemRight}>
+            <div className={styles.quantityControl}>
+              <div className={styles.minusButton}>
+                <div className={styles.minusCircle}></div>
+                <div className={styles.minusIcon}>-</div>
+              </div>
+              <div className={styles.quantity}>00</div>
+              <div className={styles.plusButton}>
+                <div className={styles.plusCircle}></div>
+                <div className={styles.plusIcon}>+</div>
+              </div>
+            </div>
+            <div className={styles.totalPrice}>18,000</div>
+          </div>
+        </div>
+
+        {/* 테토남의 소울푸드 제육볶음 */}
+        <div className={styles.menuItem}>
+          <div className={styles.menuItemLeft}>
+            <div className={styles.menuItemImage}></div>
+            <div className={styles.menuItemInfo}>
+              <div className={styles.menuItemName}>테토남의 소울푸드<br />제육볶음</div>
+              <div className={styles.menuItemPrice}>18,000</div>
+            </div>
+          </div>
+          <div className={styles.menuItemRight}>
+            <div className={styles.quantityControl}>
+              <div className={styles.minusButton}>
+                <div className={styles.minusCircle}></div>
+                <div className={styles.minusIcon}>-</div>
+              </div>
+              <div className={styles.quantity}>00</div>
+              <div className={styles.plusButton}>
+                <div className={styles.plusCircle}></div>
+                <div className={styles.plusIcon}>+</div>
+              </div>
+            </div>
+            <div className={styles.totalPrice}>17,000</div>
+          </div>
+        </div>
+
+        {/* 테토녀가 직접 사냥한 치킨 가라아게 */}
+        <div className={styles.menuItem}>
+          <div className={styles.menuItemLeft}>
+            <div className={styles.menuItemImage}></div>
+            <div className={styles.menuItemInfo}>
+              <div className={styles.menuItemName}>테토녀가 직접 사냥한<br />치킨 가라아게</div>
+              <div className={styles.menuItemPrice}>18,000</div>
+            </div>
+          </div>
+          <div className={styles.menuItemRight}>
+            <div className={styles.quantityControl}>
+              <div className={styles.minusButton}>
+                <div className={styles.minusCircle}></div>
+                <div className={styles.minusIcon}>-</div>
+              </div>
+              <div className={styles.quantity}>00</div>
+              <div className={styles.plusButton}>
+                <div className={styles.plusCircle}></div>
+                <div className={styles.plusIcon}>+</div>
+              </div>
+            </div>
+            <div className={styles.totalPrice}>17,000</div>
+          </div>
+        </div>
+
+        {/* 두부상 에겐남이 만든 순두부찌개 */}
+        <div className={styles.menuItem}>
+          <div className={styles.menuItemLeft}>
+            <div className={styles.menuItemImage}></div>
+            <div className={styles.menuItemInfo}>
+              <div className={styles.menuItemName}>두부상 에겐남이 만든<br />순두부찌개</div>
+              <div className={styles.menuItemPrice}>16,000</div>
+            </div>
+          </div>
+          <div className={styles.menuItemRight}>
+            <div className={styles.quantityControl}>
+              <div className={styles.minusButton}>
+                <div className={styles.minusCircle}></div>
+                <div className={styles.minusIcon}>-</div>
+              </div>
+              <div className={styles.quantity}>00</div>
+              <div className={styles.plusButton}>
+                <div className={styles.plusCircle}></div>
+                <div className={styles.plusIcon}>+</div>
+              </div>
+            </div>
+            <div className={styles.totalPrice}>17,000</div>
+          </div>
+        </div>
+
+        {/* 에겐, 테토 다같이 김치~전 */}
+        <div className={`${styles.menuItem} ${styles.lastMenuItem}`}>
+          <div className={styles.menuItemLeft}>
+            <div className={styles.menuItemImage}></div>
+            <div className={styles.menuItemInfo}>
+              <div className={styles.menuItemName}>에겐, 테토 다같이<br />김치~전</div>
+              <div className={styles.menuItemPrice}>16,000</div>
+            </div>
+          </div>
+          <div className={styles.menuItemRight}>
+            <div className={styles.quantityControl}>
+              <div className={styles.minusButton}>
+                <div className={styles.minusCircle}></div>
+                <div className={styles.minusIcon}>-</div>
+              </div>
+              <div className={styles.quantity}>00</div>
+              <div className={styles.plusButton}>
+                <div className={styles.plusCircle}></div>
+                <div className={styles.plusIcon}>+</div>
+              </div>
+            </div>
+            <div className={styles.totalPrice}>17,000</div>
+          </div>
+        </div>
+      </div>
+
+      {/* 음료 타이틀 */}
+      <div className={styles.drinksTitleSection}>
+        <div className={styles.drinksTitleImage}>
+          <img
+            src="/images/음료@300x-8.png"
+            alt="음료"
+            style={{
+              width: '180px',
+              height: '95px',
+              objectFit: 'cover'
+            }}
+          />
+        </div>
+        <div className={styles.drinksWarning}>⚠️  주류 및 음료는 후불결제입니다!</div>
       </div>
     </div>
   );
