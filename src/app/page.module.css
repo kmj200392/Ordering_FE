@@ -1,167 +1,434 @@
-.page {
-  --gray-rgb: 0, 0, 0;
-  --gray-alpha-200: rgba(var(--gray-rgb), 0.08);
-  --gray-alpha-100: rgba(var(--gray-rgb), 0.05);
+/* 랜딩 페이지 스타일 */
+.landingContainer {
+  width: 402px;
+  height: 874px;
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(139deg, rgba(73, 77, 78, 1) 3%, rgba(12, 12, 12, 1) 98%);
+}
 
-  --button-primary-hover: #383838;
-  --button-secondary-hover: #f2f2f2;
+.backgroundWrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+}
 
-  display: grid;
-  grid-template-rows: 20px 1fr 20px;
+.backgroundImage {
+  object-fit: cover;
+  object-position: center;
+}
+
+.backgroundGradient {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(139deg, rgba(73, 77, 78, 0.2) 3%, rgba(12, 12, 12, 0.2) 98%);
+  backdrop-filter: blur(3px);
+  z-index: 1;
+}
+
+.backgroundElements {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.logoBackground {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 0.05;
+}
+
+.logoElements {
+  opacity: 0.1;
+}
+
+.logoSection {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 10;
+}
+
+/* KU 로고 - Figma 좌표: x: 122, y: 38, 크기: 157x64 */
+.kuLogoContainer {
+  position: absolute;
+  left: 122px;
+  top: 38px;
+  width: 157px;
+  height: 64px;
+  z-index: 11;
+}
+
+.kuLogo {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: brightness(1.2) contrast(1.1);
+}
+
+/* 상단 로고 (이음 Logo.svg) - Figma 좌표: x: -4, y: 221, 크기: 409x375 */
+.nameLogoContainer {
+  position: absolute;
+  left: -4px;
+  top: 221px;
+  width: 409px;
+  height: 375px;
+  z-index: 20;
+  display: flex;
   align-items: center;
-  justify-items: center;
-  min-height: 100svh;
-  padding: 80px;
-  gap: 64px;
-  font-family: var(--font-geist-sans);
+  justify-content: center;
 }
 
-@media (prefers-color-scheme: dark) {
-  .page {
-    --gray-rgb: 255, 255, 255;
-    --gray-alpha-200: rgba(var(--gray-rgb), 0.145);
-    --gray-alpha-100: rgba(var(--gray-rgb), 0.06);
-
-    --button-primary-hover: #ccc;
-    --button-secondary-hover: #1a1a1a;
-  }
+.nameLogo {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  opacity: 1;
+  filter: brightness(1.0) contrast(1.0);
+  max-width: 100%;
+  max-height: 100%;
 }
 
-.main {
+/* 날짜 - Figma 좌표: x: 103, y: 785, 크기: 195x70 */
+.dateSection {
+  position: absolute;
+  left: 103px;
+  top: 785px;
+  width: 195px;
+  height: 70px;
+  z-index: 11;
+}
+
+.dateYellow {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: brightness(1.1) contrast(1.05);
+}
+
+/* 메뉴 페이지 스타일 */
+.menuContainer {
+  width: 402px;
+  min-height: 874px;
+  position: relative;
+  background: linear-gradient(139deg, rgba(73, 77, 78, 1) 3%, rgba(12, 12, 12, 1) 98%);
+  padding-bottom: 20px;
+}
+
+.header {
+  position: absolute;
+  left: 15px;
+  top: 18px;
+  width: 371px;
+  height: 60px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 3;
+}
+
+.headerLogo {
+  width: 65px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.headerLogoImage {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.headerText {
+  font-family: 'Pretendard', sans-serif;
+  font-weight: 300;
+  font-size: 18px;
+  line-height: 17px;
+  color: var(--foreground);
+}
+
+.menuTitle {
+  position: absolute;
+  left: -2px;
+  top: 68px;
+  width: 180px;
+  height: 95px;
+  z-index: 2;
+}
+
+.menuTitleImage {
+  width: 100%;
+  height: 100%;
+  background: var(--accent-pink);
+  border-radius: 10px;
+}
+
+.menuTitleText {
+  position: absolute;
+  left: 31px;
+  top: 72px;
+  width: 149px;
+  height: 17px;
+  font-family: 'Pretendard', sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 17px;
+  color: var(--foreground);
+}
+
+.menuList {
+  position: absolute;
+  left: 21px;
+  top: 174px;
+  width: 360px;
   display: flex;
   flex-direction: column;
-  gap: 32px;
-  grid-row-start: 2;
+  gap: 15px;
+  padding: 10px;
+  background: rgba(0, 0, 0, 0.4);
+  border-radius: 10px;
+  backdrop-filter: blur(7px);
+  z-index: 2;
 }
 
-.main ol {
-  font-family: var(--font-geist-mono);
-  padding-left: 0;
-  margin: 0;
-  font-size: 14px;
-  line-height: 24px;
-  letter-spacing: -0.01em;
-  list-style-position: inside;
-}
-
-.main li:not(:last-of-type) {
-  margin-bottom: 8px;
-}
-
-.main code {
-  font-family: inherit;
-  background: var(--gray-alpha-100);
-  padding: 2px 4px;
-  border-radius: 4px;
-  font-weight: 600;
-}
-
-.ctas {
+.menuItem {
   display: flex;
-  gap: 16px;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 15px 15px;
+  width: 340px;
+  background: linear-gradient(139deg, rgba(73, 77, 78, 1) 3%, rgba(12, 12, 12, 1) 98%);
+  border-bottom: 1px solid var(--border-color);
 }
 
-.ctas a {
-  appearance: none;
-  border-radius: 128px;
-  height: 48px;
-  padding: 0 20px;
-  border: 1px solid transparent;
-  transition:
-    background 0.2s,
-    color 0.2s,
-    border-color 0.2s;
+.menuItemLast {
+  border-bottom: none;
+}
+
+.menuItemLeft {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.foodImage {
+  width: 65px;
+  height: 65px;
+  background: var(--accent-yellow);
+  border-radius: 5px;
+}
+
+.menuItemInfo {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 10px;
+}
+
+.menuItemName {
+  font-family: 'Pretendard', sans-serif;
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 17px;
+  color: var(--foreground);
+  white-space: pre-line;
+}
+
+.menuItemPrice {
+  font-family: 'Pretendard', sans-serif;
+  font-weight: 300;
+  font-size: 14px;
+  line-height: 17px;
+  color: var(--foreground);
+}
+
+.menuItemRight {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 9px;
+}
+
+.quantityControls {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.quantityButton {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: none;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 16px;
-  line-height: 20px;
-  font-weight: 500;
+  position: relative;
+  transition: all 0.2s ease;
 }
 
-a.primary {
+.quantityButton:first-child {
+  background: var(--text-secondary);
+}
+
+.quantityButton:last-child {
   background: var(--foreground);
+}
+
+.quantityButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.quantityButton:hover:not(:disabled) {
+  transform: scale(1.1);
+}
+
+.minusIcon,
+.plusIcon {
+  font-size: 12px;
   color: var(--background);
-  gap: 8px;
+  font-weight: bold;
 }
 
-a.secondary {
-  border-color: var(--gray-alpha-200);
-  min-width: 158px;
+.quantity {
+  font-family: 'Pretendard', sans-serif;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 19px;
+  color: var(--foreground);
+  margin: 0 5px;
 }
 
-.footer {
-  grid-row-start: 3;
-  display: flex;
-  gap: 24px;
+.totalPrice {
+  font-family: 'Pretendard', sans-serif;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 14px;
+  color: var(--border-color);
 }
 
-.footer a {
-  display: flex;
-  align-items: center;
-  gap: 8px;
+.drinksTitle {
+  position: absolute;
+  left: 9px;
+  top: 816px;
+  width: 180px;
+  height: 95px;
+  z-index: 2;
 }
 
-.footer img {
-  flex-shrink: 0;
+.drinksTitleImage {
+  width: 100%;
+  height: 100%;
+  background: var(--accent-yellow);
+  border-radius: 10px;
 }
 
-/* Enable hover only on non-touch devices */
-@media (hover: hover) and (pointer: fine) {
-  a.primary:hover {
-    background: var(--button-primary-hover);
-    border-color: transparent;
-  }
-
-  a.secondary:hover {
-    background: var(--button-secondary-hover);
-    border-color: transparent;
-  }
-
-  .footer a:hover {
-    text-decoration: underline;
-    text-underline-offset: 4px;
-  }
+.drinksTitleText {
+  position: absolute;
+  left: 16px;
+  top: 72px;
+  width: 192px;
+  height: 17px;
+  font-family: 'Pretendard', sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 17px;
+  color: var(--foreground);
 }
 
-@media (max-width: 600px) {
-  .page {
-    padding: 32px;
-    padding-bottom: 80px;
+/* 페이드 인 애니메이션 */
+.landingContainer {
+  animation: fadeIn 0.5s ease-in;
+}
+
+.menuContainer {
+  animation: slideIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
   }
 
-  .main {
-    align-items: center;
-  }
-
-  .main ol {
-    text-align: center;
-  }
-
-  .ctas {
-    flex-direction: column;
-  }
-
-  .ctas a {
-    font-size: 14px;
-    height: 40px;
-    padding: 0 16px;
-  }
-
-  a.secondary {
-    min-width: auto;
-  }
-
-  .footer {
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: center;
+  to {
+    opacity: 1;
   }
 }
 
-@media (prefers-color-scheme: dark) {
-  .logo {
-    filter: invert();
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 반응형 처리 */
+@media (max-width: 402px) {
+
+  .landingContainer,
+  .menuContainer {
+    width: 100vw;
+    max-width: 402px;
+  }
+
+  .header {
+    left: 4%;
+    width: 92%;
+  }
+
+  .menuList {
+    left: 5%;
+    width: 90%;
+  }
+
+  .menuItem {
+    width: 100%;
+  }
+
+  /* 랜딩 페이지 요소들도 비례적으로 조정 */
+  .kuLogoContainer {
+    left: calc(122px * 100vw / 402px);
+    top: calc(38px * 100vh / 874px);
+    width: calc(157px * 100vw / 402px);
+    height: calc(64px * 100vh / 874px);
+  }
+
+  .nameLogoContainer {
+    left: calc(62px * 100vw / 402px);
+    top: calc(68px * 100vh / 874px);
+    width: calc(290px * 100vw / 402px);
+    height: calc(91px * 100vh / 874px);
+  }
+
+  .dateSection {
+    left: calc(103px * 100vw / 402px);
+    top: calc(785px * 100vh / 874px);
+    width: calc(195px * 100vw / 402px);
+    height: calc(70px * 100vh / 874px);
   }
 }
