@@ -140,6 +140,7 @@ export default function MenuList({
 
 function ConfirmOrderUI({ totalQty, totalAmount, selectedItems = [], itemPriceMap = {}, onOpenReceipt, onPaid }) {
     const [payOpen, setPayOpen] = useState(false);
+    const [isSubmitting, setIsSubmitting] = useState(false);
     const bankName = 'KEB 하나은행';
     const accountHolder = '김예진';
     const accountNo = '51191082320107';
@@ -148,6 +149,8 @@ function ConfirmOrderUI({ totalQty, totalAmount, selectedItems = [], itemPriceMa
     };
 
     const openReceipt = async () => {
+        if (isSubmitting) return;
+        setIsSubmitting(true);
         const snapshot = (selectedItems || []).map(line => ({
             id: line.id,
             name: line.name,
@@ -166,8 +169,10 @@ function ConfirmOrderUI({ totalQty, totalAmount, selectedItems = [], itemPriceMa
         } catch { }
         if (shouldOpen) {
             onOpenReceipt && onOpenReceipt(snapshot);
+            setPayOpen(false);
+        } else {
+            setIsSubmitting(false);
         }
-        setPayOpen(false);
     };
 
     return (
@@ -202,7 +207,7 @@ function ConfirmOrderUI({ totalQty, totalAmount, selectedItems = [], itemPriceMa
                                 </div>
                             </div>
                         </div>
-                        <button type="button" className={styles.payPrimaryBtn} onClick={openReceipt}>이체 완료</button>
+                        <button type="button" className={styles.payPrimaryBtn} onClick={openReceipt} disabled={isSubmitting} aria-disabled={isSubmitting}>이체 완료</button>
                     </div>
                 </div>
             )}

@@ -1048,6 +1048,12 @@
   cursor: pointer;
 }
 
+.payPrimaryBtn[disabled],
+.payPrimaryBtn[aria-disabled="true"] {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
 .receiptScreen {
   position: fixed;
   inset: 0;
