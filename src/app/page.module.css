@@ -5,32 +5,35 @@
   position: relative;
   overflow: hidden;
   background: linear-gradient(139deg, rgba(73, 77, 78, 1) 3%, rgba(12, 12, 12, 1) 98%);
+  z-index: 2;
 }
 
 .backgroundWrapper {
-  position: absolute;
+  position: fixed;
   top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 402px;
+  height: 100vh;
   z-index: 0;
 }
 
 .backgroundImage {
   object-fit: cover;
   object-position: center;
-  filter: blur(2px);
 }
 
 .backgroundGradient {
-  position: absolute;
+  position: fixed;
   top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(139deg, rgba(73, 77, 78, 0.2) 3%, rgba(12, 12, 12, 0.2) 98%);
-  backdrop-filter: blur(3px);
+  left: 50%;
+  transform: translateX(-50%);
+  width: 402px;
+  height: 100vh;
+  background: linear-gradient(138deg, rgba(73, 77, 78, 0.2) 0%, rgba(12, 12, 12, 0.2) 98%);
+  backdrop-filter: blur(7px);
   z-index: 1;
+  pointer-events: none;
 }
 
 .backgroundElements {
@@ -39,20 +42,23 @@
   left: 0;
   width: 100%;
   height: 100%;
-  z-index: 1;
+  z-index: 2;
   pointer-events: none;
 }
 
 .logoBackground {
   position: absolute;
-  top: 50%;
   left: 50%;
+  top: 50%;
+  width: 409px;
+  height: 375px;
   transform: translate(-50%, -50%);
-  opacity: 0.05;
+  opacity: 1;
 }
 
 .logoElements {
-  opacity: 0.1;
+  opacity: 1;
+  filter: none;
 }
 
 .logoSection {
@@ -84,10 +90,10 @@
 /* 상단 로고 (이음 Logo.svg) - Figma 좌표: x: -4, y: 221, 크기: 409x375 */
 .nameLogoContainer {
   position: absolute;
-  left: -4px;
-  top: 221px;
-  width: 409px;
-  height: 375px;
+  left: 62px;
+  top: 68px;
+  width: 290px;
+  height: 91px;
   z-index: 20;
   display: flex;
   align-items: center;
@@ -126,17 +132,28 @@
   width: 402px;
   height: 874px;
   position: relative;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+  z-index: 2;
+  padding-bottom: 1500px;
+}
+
+/* 스크롤 비활성화 (음료 메뉴 제거 시 사용) */
+.noScroll {
   overflow: hidden;
+  padding-bottom: 0;
 }
 
 .menuBackground {
-  position: absolute;
+  position: fixed;
   top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 402px;
+  height: 100vh;
   background: linear-gradient(139deg, rgba(73, 77, 78, 0.3) 3%, rgba(12, 12, 12, 0.3) 98%);
   z-index: 1;
+  pointer-events: none;
 }
 
 /* 헤더 스타일 */
@@ -167,15 +184,15 @@
 /* 메인메뉴 타이틀 */
 .menuTitleSection {
   position: absolute;
-  top: 68px;
-  left: -2px;
-  width: 180px;
-  height: 95px;
+  top: 101px;
+  left: 21px;
+  width: 149px;
+  height: 29px;
 }
 
 .menuTitleImage {
-  width: 180px;
-  height: 95px;
+  width: 149px;
+  height: 29px;
 }
 
 .menuWarning {
@@ -194,10 +211,13 @@
 /* 메뉴 아이템들 */
 .menuItems {
   position: absolute;
-  top: 174px;
+  top: 149px;
   left: 21px;
   width: 360px;
-  background: rgba(0, 0, 0, 0.4);
+  /* Semi-transparent container: black overlay + gradient with alpha */
+  background:
+    linear-gradient(0deg, rgba(0, 0, 0, 0.25), rgba(0, 0, 0, 0.25)),
+    linear-gradient(139deg, rgba(73, 77, 78, 0.6) 3%, rgba(12, 12, 12, 0.6) 98%);
   border-radius: 10px;
   padding: 10px;
   display: flex;
@@ -212,8 +232,10 @@
   align-items: center;
   gap: 10px;
   padding: 10px 15px 15px;
-  background: linear-gradient(139deg, rgba(73, 77, 78, 1) 3%, rgba(12, 12, 12, 1) 98%);
+  background: transparent;
   border-bottom: 1px solid #E4E4E4;
+  border-radius: 0;
+  box-shadow: none;
 }
 
 .lastMenuItem {
@@ -322,15 +344,15 @@
 /* 음료 타이틀 */
 .drinksTitleSection {
   position: absolute;
-  top: 816px;
-  left: 9px;
-  width: 180px;
-  height: 95px;
+  top: 804px;
+  left: 21px;
+  width: 149px;
+  height: 29px;
 }
 
 .drinksTitleImage {
-  width: 180px;
-  height: 95px;
+  width: 149px;
+  height: 29px;
 }
 
 .drinksWarning {
@@ -344,6 +366,22 @@
   font-size: 14px;
   line-height: 1.2142857142857142em;
   color: #FFFFFF;
+}
+
+/* 주류 & 음료 리스트 컨테이너 */
+.drinksItems {
+  position: absolute;
+  top: 836px;
+  left: 21px;
+  width: 360px;
+  background:
+    linear-gradient(0deg, rgba(0, 0, 0, 0.25), rgba(0, 0, 0, 0.25)),
+    linear-gradient(139deg, rgba(73, 77, 78, 0.6) 3%, rgba(12, 12, 12, 0.6) 98%);
+  border-radius: 10px;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
 }
 
 /* 페이드 인 애니메이션 */
@@ -421,4 +459,729 @@
     width: calc(195px * 100vw / 402px);
     height: calc(70px * 100vh / 874px);
   }
+}
+
+/* 고정 담기 바 */
+.cartBar {
+  position: fixed;
+  left: 50%;
+  bottom: 28px;
+  transform: translateX(-50%);
+  width: 360px;
+  padding: 15px 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: #FBFBFB;
+  border-radius: 15px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+  z-index: 50;
+}
+
+.cartCountPill {
+  width: 20px;
+  height: 20px;
+  border-radius: 3px;
+  background: #2C2C2C;
+  color: #FBFBFB;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Pretendard', sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.cartLabel {
+  color: #2C2C2C;
+  font-family: 'Pretendard', sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+/* 버튼 리셋 */
+.minusButton,
+.plusButton {
+  all: unset;
+  position: relative;
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.minusButton[disabled] {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+/* 주류 & 음료 리스트 위치 보정 (스타일은 .menuItems와 동일 사용) */
+.drinksOffset {
+  top: 836px;
+}
+
+/* 담기 시트 오버레이 */
+.cartOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 60;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.cartSheet {
+  width: 402px;
+  max-height: 70vh;
+  background: #111;
+  border-top-left-radius: 16px;
+  border-top-right-radius: 16px;
+  padding: 16px;
+  box-shadow: 0 -8px 24px rgba(0, 0, 0, 0.35);
+}
+
+.cartSheetHeader {
+  color: #FBFBFB;
+  font-family: 'Pretendard', sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+
+.cartSheetList {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  overflow: auto;
+  max-height: 40vh;
+  padding-right: 6px;
+}
+
+.cartLine {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  gap: 8px;
+  align-items: center;
+  border-bottom: 1px solid rgba(228, 228, 228, 0.2);
+  padding-bottom: 8px;
+}
+
+.cartLineName {
+  color: #FBFBFB;
+  font-family: 'KIMM_Bold', sans-serif;
+  font-size: 14px;
+}
+
+.cartLineQty {
+  color: #E4E4E4;
+  font-family: 'Pretendard', sans-serif;
+  font-size: 14px;
+}
+
+.cartLineAmount {
+  color: #E4E4E4;
+  font-family: 'Pretendard', sans-serif;
+  font-size: 14px;
+}
+
+.cartSheetFooter {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 12px;
+}
+
+.cartSheetTotal {
+  color: #FBFBFB;
+  font-family: 'Pretendard', sans-serif;
+  font-size: 14px;
+}
+
+.cartSheetActions {
+  display: flex;
+  gap: 8px;
+}
+
+.cartSheetBtnSecondary {
+  all: unset;
+  padding: 10px 14px;
+  background: #2C2C2C;
+  color: #FBFBFB;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.cartSheetBtnPrimary {
+  all: unset;
+  padding: 10px 14px;
+  background: #FBFBFB;
+  color: #2C2C2C;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+/* 풀스크린 주문내역 뷰 */
+.cartFull {
+  position: fixed;
+  inset: 0;
+  background: #0C0C0C;
+  z-index: 70;
+  display: flex;
+  flex-direction: column;
+  width: 402px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.cartFullHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px;
+}
+
+.cartFullTitle {
+  color: #FBFBFB;
+  font-family: 'KIMM_Bold', sans-serif;
+  font-size: 18px;
+}
+
+.cartFullClose {
+  all: unset;
+  color: #FBFBFB;
+  cursor: pointer;
+  padding: 6px 8px;
+  border: 1px solid rgba(228, 228, 228, 0.3);
+  border-radius: 8px;
+}
+
+.cartFullBody {
+  flex: 1;
+  overflow: auto;
+  padding: 0 16px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.cartEmpty {
+  color: #E4E4E4;
+  font-family: 'Pretendard', sans-serif;
+  font-size: 14px;
+  text-align: center;
+  margin-top: 40px;
+}
+
+.cartFullFooter {
+  padding: 12px 16px;
+  border-top: 1px solid rgba(228, 228, 228, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* 풀스크린 장바구니 (Figma 스타일) */
+.cartScreen {
+  position: fixed;
+  inset: 0;
+  z-index: 70;
+  display: flex;
+  flex-direction: column;
+  width: 402px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding-bottom: 96px;
+  /* 하단 CTA 공간 확보 */
+  background: transparent;
+}
+
+.cartScreenHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px;
+}
+
+.cartBackBtn {
+  all: unset;
+  color: #FBFBFB;
+  cursor: pointer;
+  padding: 6px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cartBackBtn:active {
+  transform: scale(0.98);
+}
+
+.cartHeaderRight {
+  color: #FBFBFB;
+  font-family: 'Pretendard', sans-serif;
+  font-weight: 600;
+  font-size: 16px;
+}
+
+.cartScreenTitle {
+  color: #FBFBFB;
+  font-family: 'KIMM_Bold', sans-serif;
+  font-size: 26px;
+  padding: 0 16px 12px 16px;
+}
+
+.cartPanel {
+  margin: 0 16px;
+  background:
+    linear-gradient(0deg, rgba(0, 0, 0, 0.25), rgba(0, 0, 0, 0.25)),
+    linear-gradient(139deg, rgba(73, 77, 78, 0.6) 3%, rgba(12, 12, 12, 0.6) 98%);
+  border-radius: 14px;
+  padding: 12px 12px 0;
+}
+
+.cartRow {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 12px;
+  align-items: center;
+  padding: 14px 0;
+  border-bottom: 1px solid rgba(228, 228, 228, 0.18);
+}
+
+.cartRow:last-child {
+  border-bottom: 1px solid rgba(228, 228, 228, 0.18);
+}
+
+.cartRowLeft {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.cartRowName {
+  color: #FBFBFB;
+  font-family: 'KIMM_Bold', sans-serif;
+  font-size: 16px;
+}
+
+.cartRowPrice {
+  color: #E4E4E4;
+  font-family: 'Pretendard', sans-serif;
+  font-size: 14px;
+}
+
+.cartRowRight {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.cartRemoveBtn {
+  all: unset;
+  width: 24px;
+  height: 24px;
+  border-radius: 12px;
+  background: rgba(251, 251, 251, 0.18);
+  color: #FBFBFB;
+  text-align: center;
+  line-height: 24px;
+  cursor: pointer;
+}
+
+.cartRowControls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.optionBtn {
+  all: unset;
+  padding: 6px 10px;
+  background: #2C2C2C;
+  color: #FBFBFB;
+  border-radius: 10px;
+  font-family: 'Pretendard', sans-serif;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.cartPanelAddMore {
+  all: unset;
+  display: block;
+  width: 100%;
+  text-align: center;
+  color: #FBFBFB;
+  font-family: 'Pretendard', sans-serif;
+  font-size: 14px;
+  padding: 14px 0;
+  cursor: pointer;
+}
+
+.cartCtaBar {
+  position: fixed;
+  left: 50%;
+  bottom: 28px;
+  transform: translateX(-50%);
+  width: 360px;
+  padding: 15px 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: #FBFBFB;
+  border-radius: 15px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+  z-index: 80;
+}
+
+.cartCtaLabel {
+  color: #2C2C2C;
+  font-family: 'Pretendard', sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.modalOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 90;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(7px);
+}
+
+.modalCard {
+  width: 360px;
+  max-width: calc(100vw - 40px);
+  background: rgba(17, 17, 17, 0.95);
+  border-radius: 16px;
+  padding: 20px 16px 16px;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.5);
+  text-align: center;
+  transform: scale(0.96);
+  animation: modalIn 140ms ease-out forwards;
+}
+
+@keyframes modalIn {
+  to {
+    transform: scale(1);
+  }
+}
+
+.modalTitle {
+  color: #FBFBFB;
+  font-family: 'KIMM_Bold', sans-serif;
+  font-size: 20px;
+  margin-bottom: 8px;
+}
+
+.modalBody {
+  color: #E4E4E4;
+  font-family: 'Pretendard', sans-serif;
+  font-size: 15px;
+  margin-bottom: 12px;
+}
+
+.modalDivider {
+  height: 1px;
+  background: rgba(255, 255, 255, 0.12);
+  margin: 10px 0 12px;
+}
+
+.modalActions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.modalBtnSecondary {
+  all: unset;
+  min-height: 52px;
+  padding: 0 16px;
+  background: #2C2C2C;
+  color: #FBFBFB;
+  border-radius: 12px;
+  cursor: pointer;
+  text-align: center;
+  font-family: 'Pretendard', sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.modalBtnPrimary {
+  all: unset;
+  min-height: 52px;
+  padding: 0 16px;
+  background: #FBFBFB;
+  color: #2C2C2C;
+  border-radius: 12px;
+  cursor: pointer;
+  text-align: center;
+  font-family: 'Pretendard', sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.payModalCard {
+  width: 255px;
+  max-width: calc(100vw - 40px);
+  background: #F1F1F1;
+  border-radius: 20px;
+  padding: 30px 10px 15px;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.45);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 30px;
+}
+
+.payInner {
+  width: 214px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.bankSection {
+  width: 214px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.bankHeader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+}
+
+.payTitle {
+  color: #000000;
+  font-family: 'Elice DX Neolli', sans-serif;
+  font-size: 18px;
+  font-weight: 300;
+  line-height: 1em;
+}
+
+.payAmount {
+  color: #000000;
+  font-family: 'Pretendard', sans-serif;
+  font-weight: 700;
+  font-size: 36px;
+  line-height: 1em;
+  margin: 0;
+}
+
+.payBankLogo {
+  width: 67px;
+  height: 59px;
+  margin: 8px 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.payBankName {
+  color: #5C5C5C;
+  font-family: 'Pretendard', sans-serif;
+  font-size: 12px;
+  line-height: 1em;
+  margin: 0;
+}
+
+.payHolder {
+  color: #000000;
+  font-family: 'Pretendard', sans-serif;
+  font-weight: 700;
+  font-size: 18px;
+  line-height: 1em;
+  margin: 0;
+}
+
+.payAccountRow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+}
+
+.payAccount {
+  color: #000000;
+  font-family: 'Pretendard', sans-serif;
+  font-size: 18px;
+  line-height: 1em;
+}
+
+.copyBtn {
+  all: unset;
+  cursor: pointer;
+  width: 20px;
+  height: 20px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.payPrimaryBtn {
+  all: unset;
+  width: 235px;
+  height: 50px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #2C2C2C;
+  color: #FBFBFB;
+  border-radius: 15px;
+  font-family: 'Pretendard', sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.receiptScreen {
+  position: fixed;
+  inset: 0;
+  z-index: 75;
+  display: flex;
+  flex-direction: column;
+  width: 402px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: transparent;
+  padding-bottom: 96px;
+}
+
+/* 주문 완료! 타이틀 (Elice DX Neolli 28 / #6DEC86) */
+.receiptTitleGreen {
+  color: #6DEC86;
+  font-family: 'Elice DX Neolli', sans-serif;
+  font-weight: 500;
+  font-size: 28px;
+  padding: 0 16px 12px 16px;
+}
+
+/* 상단 요약 패널 (360w, padding 30/20) */
+.receiptPanelOuter {
+  width: 360px;
+  margin: 0 auto;
+  background:
+    linear-gradient(0deg, rgba(0, 0, 0, 0.25), rgba(0, 0, 0, 0.25)),
+    linear-gradient(139deg, rgba(73, 77, 78, 0.6) 3%, rgba(12, 12, 12, 0.6) 98%);
+  border-radius: 10px;
+  padding: 30px 20px;
+  display: flex;
+  justify-content: center;
+}
+
+/* 내부 300w 컨텐츠 */
+.receiptPanelInner {
+  width: 300px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* 총 개수/금액 (Elice DX Neolli 24 / white) */
+.receiptTotal {
+  color: #FBFBFB;
+  font-family: 'Elice DX Neolli', sans-serif;
+  font-weight: 700;
+  font-size: 24px;
+}
+
+/* 점선 구분선 */
+.receiptDivider {
+  border-bottom: 1px dashed #E4E4E4;
+}
+
+/* 최근 주문 내역 타이틀 (Pretendard 16/600 / #E4E4E4) */
+.receiptSubTitle {
+  color: #E4E4E4;
+  font-family: 'Pretendard', sans-serif;
+  font-weight: 600;
+  font-size: 16px;
+}
+
+/* 주문 라인 리스트 */
+.receiptList {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* 라인 (아래 점선, padding-bottom 15) */
+.receiptRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 15px;
+  border-bottom: 1px dashed #E4E4E4;
+}
+
+.receiptRowName {
+  color: #FFFFFF;
+  font-family: 'Elice DX Neolli', sans-serif;
+  font-weight: 500;
+  font-size: 14px;
+}
+
+.receiptRowAmount {
+  color: #E4E4E4;
+  font-family: 'Elice DX Neolli', sans-serif;
+  font-weight: 300;
+  font-size: 14px;
+}
+
+/* 하단 버튼: 메뉴판으로 (360x50) */
+.receiptBtn {
+  position: fixed;
+  left: 50%;
+  bottom: 28px;
+  transform: translateX(-50%);
+  width: 360px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #FBFBFB;
+  border-radius: 15px;
+  color: #2C2C2C;
+  font-family: 'Pretendard', sans-serif;
+  font-weight: 600;
+  font-size: 16px;
+  z-index: 80;
+  cursor: pointer;
+}
+
+/* 주문내역 모달 상단 헤더 (Figma 2920-2757) */
+.receiptScreen .cartScreenHeader {
+  position: relative;
+  padding: 16px;
+}
+
+.receiptScreen .cartHeaderRight {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  color: #E4E4E4;
+  font-family: 'Pretendard', sans-serif;
+  font-weight: 600;
+  font-size: 16px;
+}
+
+.receiptScreen .cartFullClose {
+  border: 0;
+  background: transparent;
+  color: #E4E4E4;
+  padding: 6px 8px;
 }

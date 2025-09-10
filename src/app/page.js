@@ -2,6 +2,7 @@
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import styles from './page.module.css';
+import MenuList from './components/MenuList';
 
 export default function Home() {
   const [showLanding, setShowLanding] = useState(true);
@@ -67,7 +68,7 @@ function LandingPage() {
         {/* 상단 로고 (이음 Logo.svg) */}
         <div className={styles.nameLogoContainer}>
           <img
-            src="/images/Logo.svg"
+            src="/images/Name@300x-8.svg"
             alt="Logo"
             style={{
               width: '100%',
@@ -93,8 +94,100 @@ function LandingPage() {
 }
 
 function MenuPage() {
+  const items = [
+    { id: 'm1', name: '테토야끼', price: 17000, imageSrc: '/images/menu/menu-01.png' },
+    { id: 'm2', name: '에겐남의 마음처럼<br />따뜻한 콘치즈', price: 18000, imageSrc: '/images/menu/menu-02.png' },
+    { id: 'm3', name: '테토남의 소울푸드<br />제육볶음', price: 18000, imageSrc: '/images/menu/menu-03.png' },
+    { id: 'm4', name: '테토녀가 직접 사냥한<br />치킨 가라아게', price: 18000, imageSrc: '/images/menu/menu-04.png' },
+    { id: 'm5', name: '두부상 에겐남이 만든<br />순두부찌개', price: 16000, imageSrc: '/images/menu/menu-05.png' },
+    { id: 'm6', name: '에겐, 테토 다같이<br />김치~전', price: 16000, imageSrc: '/images/menu/menu-06.png' }
+  ];
+
+  const [openKey, setOpenKey] = useState(null);
+  const [receiptOpen, setReceiptOpen] = useState(false);
+  const [receiptLines, setReceiptLines] = useState([]);
+  const drinkItems = [
+    { id: 'd1', name: '소주', price: 5000, imageSrc: '/images/menu/menu-07.png' },
+    { id: 'd2', name: '맥주', price: 5000, imageSrc: '/images/menu/menu-08-45ede9.png' },
+    { id: 'd3', name: '과일소주', price: 6000, imageSrc: '/images/menu/menu-09.png' },
+    { id: 'd4', name: '매화수', price: 7000, imageSrc: '/images/menu/menu-10.png' },
+    { id: 'd5', name: '음료', price: 2000, imageSrc: '/images/menu/menu-11.png' }
+  ];
+
+  const allItems = [...items, ...drinkItems];
+  const priceMap = allItems.reduce((acc, it) => { acc[it.id] = it.price; return acc; }, {});
+
+  const [quantities, setQuantities] = useState(() => {
+    const init = Object.create(null);
+    allItems.forEach(i => { init[i.id] = 0; });
+    return init;
+  });
+
+  const increment = (id) => setQuantities(prev => ({ ...prev, [id]: (prev[id] || 0) + 1 }));
+  const decrement = (id) => setQuantities(prev => ({ ...prev, [id]: Math.max(0, (prev[id] || 0) - 1) }));
+  const removeLine = (id) => setQuantities(prev => ({ ...prev, [id]: 0 }));
+
+  const { totalQty, totalAmount, selectedItems } = (() => {
+    let qty = 0;
+    let amount = 0;
+    const selected = [];
+    allItems.forEach(it => {
+      const q = quantities[it.id] || 0;
+      if (q > 0) {
+        qty += q;
+        amount += q * (priceMap[it.id] || 0);
+        selected.push({ id: it.id, name: it.name, quantity: q });
+      }
+    });
+    return { totalQty: qty, totalAmount: amount, selectedItems: selected };
+  })();
+
+  const handleOpenReceipt = (snapshot) => {
+    setReceiptLines(snapshot || []);
+    setReceiptOpen(true);
+    setOpenKey(null);
+  };
+
+  const handlePaid = async (snapshot) => {
+    try {
+      const payload = {
+        tableNum: 0,
+        orders: (snapshot || []).map(l => ({ menuName: stripHtml(l.name), quantity: l.quantity }))
+      };
+      console.log('[send_order] payload', payload);
+      const res = await fetch('/api/send_order', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'accept': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      const text = await res.text();
+      console.log('[send_order] status', res.status, 'ok', res.ok, 'body', text);
+      if (res.ok) {
+        // clear cart
+        setQuantities(prev => {
+          const cleared = { ...prev };
+          Object.keys(cleared).forEach(k => { cleared[k] = 0; });
+          return cleared;
+        });
+        // ensure any open UI returns to menu
+        setOpenKey(null);
+        setReceiptOpen(false);
+        setReceiptLines([]);
+      }
+      return res.ok;
+    } catch (e) { /* swallow */ }
+  };
+
+  function stripHtml(html) {
+    if (!html) return '';
+    if (typeof window === 'undefined') return html.replace(/<[^>]*>/g, '');
+    const tmp = document.createElement('div');
+    tmp.innerHTML = html;
+    return (tmp.textContent || tmp.innerText || '').trim();
+  }
+
   return (
-    <div className={styles.menuContainer}>
+    <div className={`${styles.menuContainer} ${styles.noScroll}`}>
       {/* 배경 이미지 */}
       <div className={styles.backgroundWrapper}>
         <Image
@@ -110,205 +203,119 @@ function MenuPage() {
       <div className={styles.menuBackground}></div>
 
       {/* 헤더 */}
-      <div className={styles.menuHeader}>
-        <div className={styles.headerLogo}>
-          <img
-            src="/images/Logo.svg"
-            alt="Header Logo"
-            style={{
-              width: '65px',
-              height: '60px',
-              objectFit: 'cover'
-            }}
-          />
+      {!openKey && !receiptOpen && (
+        <div className={styles.menuHeader}>
+          <div className={styles.headerLogo}>
+            <img
+              src="/images/Logo.svg"
+              alt="Header Logo"
+              style={{
+                width: '65px',
+                height: '60px',
+                objectFit: 'cover'
+              }}
+            />
+          </div>
+          <div className={styles.headerTitle}>주문내역</div>
         </div>
-        <div className={styles.headerTitle}>주문내역</div>
-      </div>
+      )}
 
       {/* 메인메뉴 타이틀 */}
-      <div className={styles.menuTitleSection}>
-        <div className={styles.menuTitleImage}>
-          <img
-            src="/images/메인메뉴@300x-8.png"
-            alt="메인메뉴"
-            style={{
-              width: '180px',
-              height: '95px',
-              objectFit: 'cover'
-            }}
-          />
+      {!openKey && !receiptOpen && (
+        <div className={styles.menuTitleSection}>
+          <div className={styles.menuTitleImage}>
+            <img
+              src="/images/titles/menu-title.png"
+              alt="메인메뉴"
+              style={{ width: '149px', height: '29px', objectFit: 'contain' }}
+            />
+          </div>
         </div>
-        <div className={styles.menuWarning}>⚠️  안주는 선불결제입니다!</div>
-      </div>
+      )}
 
-      {/* 메뉴 아이템들 */}
-      <div className={styles.menuItems}>
-        {/* 테토야끼 */}
-        <div className={styles.menuItem}>
-          <div className={styles.menuItemLeft}>
-            <div className={styles.menuItemImage}></div>
-            <div className={styles.menuItemInfo}>
-              <div className={styles.menuItemName}>테토야끼</div>
-              <div className={styles.menuItemPrice}>17,000</div>
-            </div>
-          </div>
-          <div className={styles.menuItemRight}>
-            <div className={styles.quantityControl}>
-              <div className={styles.minusButton}>
-                <div className={styles.minusCircle}></div>
-                <div className={styles.minusIcon}>-</div>
-              </div>
-              <div className={styles.quantity}>00</div>
-              <div className={styles.plusButton}>
-                <div className={styles.plusCircle}></div>
-                <div className={styles.plusIcon}>+</div>
-              </div>
-            </div>
-            <div className={styles.totalPrice}>17,000</div>
-          </div>
-        </div>
-
-        {/* 에겐남의 마음처럼 따뜻한 콘치즈 */}
-        <div className={styles.menuItem}>
-          <div className={styles.menuItemLeft}>
-            <div className={styles.menuItemImage}></div>
-            <div className={styles.menuItemInfo}>
-              <div className={styles.menuItemName}>에겐남의 마음처럼<br />따뜻한 콘치즈</div>
-              <div className={styles.menuItemPrice}>18,000</div>
-            </div>
-          </div>
-          <div className={styles.menuItemRight}>
-            <div className={styles.quantityControl}>
-              <div className={styles.minusButton}>
-                <div className={styles.minusCircle}></div>
-                <div className={styles.minusIcon}>-</div>
-              </div>
-              <div className={styles.quantity}>00</div>
-              <div className={styles.plusButton}>
-                <div className={styles.plusCircle}></div>
-                <div className={styles.plusIcon}>+</div>
-              </div>
-            </div>
-            <div className={styles.totalPrice}>18,000</div>
-          </div>
-        </div>
-
-        {/* 테토남의 소울푸드 제육볶음 */}
-        <div className={styles.menuItem}>
-          <div className={styles.menuItemLeft}>
-            <div className={styles.menuItemImage}></div>
-            <div className={styles.menuItemInfo}>
-              <div className={styles.menuItemName}>테토남의 소울푸드<br />제육볶음</div>
-              <div className={styles.menuItemPrice}>18,000</div>
-            </div>
-          </div>
-          <div className={styles.menuItemRight}>
-            <div className={styles.quantityControl}>
-              <div className={styles.minusButton}>
-                <div className={styles.minusCircle}></div>
-                <div className={styles.minusIcon}>-</div>
-              </div>
-              <div className={styles.quantity}>00</div>
-              <div className={styles.plusButton}>
-                <div className={styles.plusCircle}></div>
-                <div className={styles.plusIcon}>+</div>
-              </div>
-            </div>
-            <div className={styles.totalPrice}>17,000</div>
-          </div>
-        </div>
-
-        {/* 테토녀가 직접 사냥한 치킨 가라아게 */}
-        <div className={styles.menuItem}>
-          <div className={styles.menuItemLeft}>
-            <div className={styles.menuItemImage}></div>
-            <div className={styles.menuItemInfo}>
-              <div className={styles.menuItemName}>테토녀가 직접 사냥한<br />치킨 가라아게</div>
-              <div className={styles.menuItemPrice}>18,000</div>
-            </div>
-          </div>
-          <div className={styles.menuItemRight}>
-            <div className={styles.quantityControl}>
-              <div className={styles.minusButton}>
-                <div className={styles.minusCircle}></div>
-                <div className={styles.minusIcon}>-</div>
-              </div>
-              <div className={styles.quantity}>00</div>
-              <div className={styles.plusButton}>
-                <div className={styles.plusCircle}></div>
-                <div className={styles.plusIcon}>+</div>
-              </div>
-            </div>
-            <div className={styles.totalPrice}>17,000</div>
-          </div>
-        </div>
-
-        {/* 두부상 에겐남이 만든 순두부찌개 */}
-        <div className={styles.menuItem}>
-          <div className={styles.menuItemLeft}>
-            <div className={styles.menuItemImage}></div>
-            <div className={styles.menuItemInfo}>
-              <div className={styles.menuItemName}>두부상 에겐남이 만든<br />순두부찌개</div>
-              <div className={styles.menuItemPrice}>16,000</div>
-            </div>
-          </div>
-          <div className={styles.menuItemRight}>
-            <div className={styles.quantityControl}>
-              <div className={styles.minusButton}>
-                <div className={styles.minusCircle}></div>
-                <div className={styles.minusIcon}>-</div>
-              </div>
-              <div className={styles.quantity}>00</div>
-              <div className={styles.plusButton}>
-                <div className={styles.plusCircle}></div>
-                <div className={styles.plusIcon}>+</div>
-              </div>
-            </div>
-            <div className={styles.totalPrice}>17,000</div>
-          </div>
-        </div>
-
-        {/* 에겐, 테토 다같이 김치~전 */}
-        <div className={`${styles.menuItem} ${styles.lastMenuItem}`}>
-          <div className={styles.menuItemLeft}>
-            <div className={styles.menuItemImage}></div>
-            <div className={styles.menuItemInfo}>
-              <div className={styles.menuItemName}>에겐, 테토 다같이<br />김치~전</div>
-              <div className={styles.menuItemPrice}>16,000</div>
-            </div>
-          </div>
-          <div className={styles.menuItemRight}>
-            <div className={styles.quantityControl}>
-              <div className={styles.minusButton}>
-                <div className={styles.minusCircle}></div>
-                <div className={styles.minusIcon}>-</div>
-              </div>
-              <div className={styles.quantity}>00</div>
-              <div className={styles.plusButton}>
-                <div className={styles.plusCircle}></div>
-                <div className={styles.plusIcon}>+</div>
-              </div>
-            </div>
-            <div className={styles.totalPrice}>17,000</div>
-          </div>
-        </div>
-      </div>
+      {/* 메뉴 리스트 */}
+      <MenuList
+        items={items}
+        selfKey="main"
+        openKey={openKey}
+        onOpenCart={(key) => setOpenKey(key)}
+        onCloseCart={() => setOpenKey(null)}
+        quantities={quantities}
+        onIncrement={increment}
+        onDecrement={decrement}
+        onRemove={removeLine}
+        allSelectedItems={selectedItems}
+        totalQty={totalQty}
+        totalAmount={totalAmount}
+        itemPriceMap={priceMap}
+        showCartBar={true}
+        isReceiptOpen={receiptOpen}
+        onOpenReceipt={handleOpenReceipt}
+        onPaid={handlePaid}
+      />
 
       {/* 음료 타이틀 */}
-      <div className={styles.drinksTitleSection}>
-        <div className={styles.drinksTitleImage}>
-          <img
-            src="/images/음료@300x-8.png"
-            alt="음료"
-            style={{
-              width: '180px',
-              height: '95px',
-              objectFit: 'cover'
-            }}
-          />
+      {!openKey && !receiptOpen && (
+        <div className={styles.drinksTitleSection}>
+          <div className={styles.drinksTitleImage}>
+            <img
+              src="/images/titles/drinks-title.png"
+              alt="주류 & 음료"
+              style={{ width: '149px', height: '29px', objectFit: 'contain' }}
+            />
+          </div>
         </div>
-        <div className={styles.drinksWarning}>⚠️  주류 및 음료는 후불결제입니다!</div>
-      </div>
+      )}
+
+      {/* 주류 & 음료 리스트 */}
+      <MenuList
+        containerClassName={`${styles.menuItems} ${styles.drinksOffset}`}
+        imageObjectFit="contain"
+        selfKey="drinks"
+        openKey={openKey}
+        onOpenCart={(key) => setOpenKey(key)}
+        onCloseCart={() => setOpenKey(null)}
+        items={drinkItems}
+        quantities={quantities}
+        onIncrement={increment}
+        onDecrement={decrement}
+        onRemove={removeLine}
+        allSelectedItems={selectedItems}
+        totalQty={totalQty}
+        totalAmount={totalAmount}
+        itemPriceMap={priceMap}
+        isReceiptOpen={receiptOpen}
+        onOpenReceipt={handleOpenReceipt}
+        onPaid={handlePaid}
+      />
+
+      {receiptOpen && (
+        <div className={styles.receiptScreen} role="dialog" aria-modal="true">
+          <div className={styles.cartScreenHeader}>
+            <div className={styles.cartHeaderRight}>주문내역</div>
+            <button type="button" className={styles.cartFullClose} onClick={() => setReceiptOpen(false)}>닫기</button>
+          </div>
+          <div className={styles.receiptTitleGreen}>주문 완료!</div>
+
+          <div className={styles.receiptPanelOuter}>
+            <div className={styles.receiptPanelInner}>
+              <div className={styles.receiptTotal}>{`총 ${totalQty}개 | ${totalAmount.toLocaleString('ko-KR')}원`}</div>
+              <div className={styles.receiptDivider}></div>
+              <div className={styles.receiptSubTitle}>{`최근 주문 내역 (${receiptLines.length}개)`}</div>
+              <div className={styles.receiptList}>
+                {receiptLines.map(line => (
+                  <div className={styles.receiptRow} key={`receipt-${line.id}`}>
+                    <div className={styles.receiptRowName} dangerouslySetInnerHTML={{ __html: `${line.name} x${line.quantity}` }} />
+                    <div className={styles.receiptRowAmount}>{(line.quantity * priceMap[line.id]).toLocaleString('ko-KR')}원</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          <div className={styles.receiptBtn} onClick={() => setReceiptOpen(false)} role="button">메뉴판으로</div>
+        </div>
+      )}
     </div>
   );
 }
