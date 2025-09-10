@@ -1,0 +1,9 @@
+{
+    "redirects": [
+        {
+            "source": "/order:slug",
+            "destination": "/order/:slug",
+            "permanent": true
+        }
+    ]
+}
