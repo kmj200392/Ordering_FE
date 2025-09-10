@@ -14,7 +14,7 @@ function LandingPage() {
             <div className={styles.backgroundGradient}></div>
             <div className={styles.backgroundElements}>
                 <div className={styles.logoBackground} aria-hidden="true">
-                    <img src="/images/Logo2.svg" alt="" width="409" height="392" className={styles.logoElements} loading="eager" />
+                    <img src="/images/Logo.svg" alt="" width="409" height="392" className={styles.logoElements} />
                 </div>
             </div>
             <div className={styles.logoSection}>
